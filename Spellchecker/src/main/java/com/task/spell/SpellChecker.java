@@ -12,7 +12,7 @@ import java.util.stream.*;
  */
 public class SpellChecker {
 
-    private final @NotNull HashSet<String> dictionary;
+    private final @NotNull Set<String> dictionary;
     private int depth = 2;
     private static final String DEFAULT_DICT = "src/main/resources/words.txt";
 
@@ -81,10 +81,8 @@ public class SpellChecker {
         if (i > 0) {
             pref = word.substring(0, i);
         }
-        var suff = "";
-        if (i < word.length()) {
-            suff = word.substring(i);
-        }
+        var suff =  word.substring(i);
+
         var res = new ArrayList<String>();
 
         for (char c = 'a'; c <= 'z'; c++) {
@@ -127,16 +125,18 @@ public class SpellChecker {
     }
 
 
-    private HashSet<String> possibleWords(@NotNull String word) {
+    private Set<String> possibleWords(@NotNull String word) {
         var words = new HashSet<String>();
 
-        for (int i = 0; i < word.length(); i++) {
-
-            if (i + 1 < word.length()) {
-                words.add(swapped(word, i));
-            }
-
+        for (int i = 0; i <= word.length(); i++) {
             words.addAll(missing(word, i));
+        }
+
+        for (int i = 0; i + 1 < word.length(); i++) {
+            words.add(swapped(word, i));
+        }
+
+        for (int i = 0; i < word.length(); i++) {
             words.add(extra(word, i));
             words.addAll(wrong(word, i));
         }
@@ -144,10 +144,10 @@ public class SpellChecker {
         return words;
     }
 
-    private HashSet<String> deepPossibleWords(@NotNull String word) {
+    private Set<String> deepPossibleWords(@NotNull String word) {
         var newWords = new HashSet<String>();
         newWords.add(word);
-        
+
         var result = new HashSet<String>();
         result.add(word);
         
@@ -157,6 +157,7 @@ public class SpellChecker {
             for (var s : newWords) {
                 tmp.addAll(possibleWords(s));
             }
+
 
             tmp.removeAll(result);
             newWords = tmp;
