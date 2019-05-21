@@ -17,7 +17,7 @@ public class SpellChecker {
     private static final String DEFAULT_DICT = "src/main/resources/words.txt";
 
     /**
-     * Creates a database of words to check based on this file
+     * Creates a seacrh word list from all the words in given file
      */
     public SpellChecker(File file) throws IOException {
         dictionary = new HashSet<>();
@@ -33,14 +33,14 @@ public class SpellChecker {
     }
 
     /**
-     * Creates a database from default english word list
+     * Creates a search word list from default list
      */
     public SpellChecker() throws IOException {
         this(new File(DEFAULT_DICT));
     }
 
     /**
-     * Uses given list as word patterns
+     * Uses given list as search word list
      */
     public SpellChecker(@NotNull List<String> words) {
         dictionary = new HashSet<>();
@@ -48,7 +48,7 @@ public class SpellChecker {
     }
 
     /**
-     * Adds new words to the list
+     * Adds new words to the search word list
      */
     public void addWords(@NotNull List<String> words) {
         dictionary.addAll(words);
