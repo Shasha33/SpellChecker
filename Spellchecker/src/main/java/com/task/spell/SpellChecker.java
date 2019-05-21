@@ -48,6 +48,14 @@ public class SpellChecker {
     }
 
     /**
+     * Adds new words to the list
+     */
+    public void addWords(@NotNull List<String> words) {
+        dictionary.addAll(words);
+
+    }
+
+    /**
      * Sets the number of typos that can be made in a word.
      * Default value is 2
      */
@@ -65,7 +73,7 @@ public class SpellChecker {
             suff = word.substring(i + 2);
         }
 
-        return pref + word.charAt(i) + word.charAt(i + 1) + suff;
+        return pref + word.charAt(i + 1) + word.charAt(i) + suff;
     }
 
     private static List<String> missing(@NotNull String word, int i) {
@@ -130,6 +138,7 @@ public class SpellChecker {
 
             words.addAll(missing(word, i));
             words.add(extra(word, i));
+            words.addAll(wrong(word, i));
         }
 
         return words;
@@ -167,7 +176,12 @@ public class SpellChecker {
             return Set.of(word);
         }
 
-        var set = deepPossibleWords(word);
+        Set<String> set;
+        if (depth == 1) {
+            set = possibleWords(word);
+        } else {
+            set = deepPossibleWords(word);
+        }
 
         set.retainAll(dictionary);
         return set;
