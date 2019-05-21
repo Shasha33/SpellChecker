@@ -24,9 +24,7 @@ public class SpellChecker {
         try (var reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             var s = reader.readLine();
             while (s != null) {
-                var wordsList = Arrays.stream(s.split(" "))
-                        .filter(word -> word.length() > 1 || "a".equals(word)).collect(Collectors.toList());
-                dictionary.addAll(wordsList);
+                dictionary.addAll(Arrays.asList(s.split(" ")));
                 s = reader.readLine();
             }
         }
